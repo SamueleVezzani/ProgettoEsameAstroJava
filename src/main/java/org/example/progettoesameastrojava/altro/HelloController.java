@@ -1,4 +1,4 @@
-package org.example.progettoesameastrojava;
+package org.example.progettoesameastrojava.altro;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
