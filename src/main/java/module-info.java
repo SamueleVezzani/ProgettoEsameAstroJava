@@ -1,6 +1,7 @@
 module org.example.progettoesameastrojava {
     requires javafx.controls;
     requires javafx.fxml;
+    requires jdk.jfr;
 
 
     opens org.example.progettoesameastrojava to javafx.fxml;
