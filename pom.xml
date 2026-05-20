@@ -61,7 +61,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                org.example.progettoesameastrojava/org.example.progettoesameastrojava.HelloApplication
+                                org.example.progettoesameastrojava/org.example.progettoesameastrojava.altro.HelloApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
