@@ -1,4 +1,4 @@
 package org.example.progettoesameastrojava.GameEngine;
 
-public class App {
+public class Renderer {
 }
