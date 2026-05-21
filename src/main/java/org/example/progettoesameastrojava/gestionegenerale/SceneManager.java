@@ -7,6 +7,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.example.progettoesameastrojava.GameEngine.GameLoop;
+import org.example.progettoesameastrojava.schermatevisive.MenuScreen;
 
 public class SceneManager {
     private Stage mainStage;
@@ -16,7 +17,7 @@ public class SceneManager {
     }
 
     public void switchToMenu() {
-        VBox menuLayout=Launcher.createMenu(this);
+        VBox menuLayout= MenuScreen.createMenu(this);
         Scene menuScene = new Scene(menuLayout, 800, 500);
         mainStage.setScene(menuScene);
         mainStage.setTitle("Menu Principale");
