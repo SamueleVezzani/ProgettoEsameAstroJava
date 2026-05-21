@@ -9,4 +9,13 @@ import javafx.stage.Stage;
 
 public class Launcher extends Application {
 
+    @Override
+    public void start(Stage stage) throws Exception {
+        SceneManager sm=new SceneManager(stage);
+        sm.switchToMenu();
+    }
+
+    public static void main(String[] args){
+        launch(args);
+    }
 }
