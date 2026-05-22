@@ -8,14 +8,17 @@ public class Renderer {
     //attributi
     private GraphicsContext gc;
     private final Canvas canvas;
+
     //metodi
-    public Renderer(Canvas canvas){
+    public Renderer(Canvas canvas) {
         gc = canvas.getGraphicsContext2D();
         this.canvas = canvas;
     }
-    public void render(double playerX, double playerY){
-        gc.clearRect(0,0,canvas.getWidth(), canvas.getHeight());
+
+    public void render(double playerX, double playerY) {
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
+
     public void renderMap(int[][] map, int tileSize) {
         for (int row = 0; row < map.length; row++) {
             for (int col = 0; col < map[0].length; col++) {
@@ -35,3 +38,4 @@ public class Renderer {
             }
         }
     }
+}
