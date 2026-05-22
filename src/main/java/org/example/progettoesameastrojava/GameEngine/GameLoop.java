@@ -34,6 +34,7 @@ public class GameLoop extends AnimationTimer {
         this.isDown = false;
         this.isLeft = false;
         this.isRight = false;
+
     }
 
     @Override
