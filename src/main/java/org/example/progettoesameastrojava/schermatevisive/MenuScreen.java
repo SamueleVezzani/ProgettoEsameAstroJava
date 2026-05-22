@@ -1,39 +1,46 @@
 package org.example.progettoesameastrojava.schermatevisive;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
 import org.example.progettoesameastrojava.gestionegenerale.SceneManager;
-
+import java.util.Optional;
 
 public class MenuScreen {
-    //attributi
-    private VBox rootLayout;
-    private Button btnStart;
+    private VBox rootLayout = new VBox(20);
 
-    public MenuScreen(SceneManager sm){
-        //implementazione dei bottoni
-        //switchToMenu
-        //switchToGame
-        //switchToGameOver
+    private void richiediConfermaUscita() {
+        // 1. Crea la finestrina di tipo CONFIRMATION
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Uscita dal Gioco");
+        alert.setHeaderText("Stai per uscire dal gioco.");
+        alert.setContentText("Sei sicuro di voler uscire davvero?");
 
+        // 2. Mostra la finestra e aspetta che l'utente clicchi un pulsante
+        Optional<ButtonType> risultato = alert.showAndWait();
+
+        // 3. Se l'utente clicca su OK, chiudi l'applicazione
+        if (risultato.isPresent() && risultato.get() == ButtonType.OK) {
+            System.exit(0);
+        }
     }
-    public static VBox createMenu(SceneManager sm){
-        VBox menu=new VBox(20);
+    public MenuScreen(SceneManager sm){
         Button btnStart=new Button("GIOCA");
         Button btnOptions=new Button("OPZIONI");
         Button btnExit=new Button("ESCI");
 
-        menu.setAlignment(Pos.CENTER);
-        menu.getChildren().addAll(btnStart,btnOptions,btnExit);
+        rootLayout.setAlignment(Pos.CENTER);
+        rootLayout.getChildren().addAll(btnStart,btnOptions,btnExit);
 
         btnStart.setOnAction(e->sm.switchToGame());
 
         btnOptions.setOnAction(e->sm.switchToMenu());
 
-        btnExit.setOnAction(e->sm.switchToGameOver());
+        btnExit.setOnAction(e->richiediConfermaUscita());
 
-        return menu;
     }
+
     public VBox getLayout(){
         return rootLayout;
     }
