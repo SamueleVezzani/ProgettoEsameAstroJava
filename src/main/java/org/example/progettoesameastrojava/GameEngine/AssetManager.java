@@ -23,7 +23,7 @@ public class AssetManager {
     }
 
 
-    public Image getImage(String key){
+    public static Image getImage(String key){
         return sprites.get(key);
     }
 

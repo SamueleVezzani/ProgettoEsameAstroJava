@@ -20,6 +20,8 @@ public class GameLoop extends AnimationTimer {
     private boolean isDown;
     private boolean isLeft;
     private boolean isRight;
+    private int[][] map;
+    private int tileSize = 32;
 
     public GameLoop(GameScreen gm){
         this.gm=gm;
@@ -34,6 +36,7 @@ public class GameLoop extends AnimationTimer {
         this.isDown = false;
         this.isLeft = false;
         this.isRight = false;
+
 
     }
 
