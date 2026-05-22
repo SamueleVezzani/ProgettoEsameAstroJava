@@ -13,6 +13,6 @@ public class Renderer {
         this.canvas = canvas;
     }
     public void render(double playerX, double playerY){
-        gc.clearRect(0,0,canvas.getWidth(), canvas.getHeight();
+        gc.clearRect(0,0,canvas.getWidth(), canvas.getHeight());
     }
 }
