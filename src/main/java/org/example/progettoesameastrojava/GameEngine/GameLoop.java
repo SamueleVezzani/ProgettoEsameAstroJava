@@ -24,7 +24,7 @@ public class GameLoop extends AnimationTimer {
     public GameLoop(GameScreen gm){
         this.gm=gm;
         Canvas canvas = gm.getCanvas();
-        //this.renderer = new Renderer(canvas);
+        this.renderer = new Renderer(canvas);
 
         this.playerx = 350;
         this.playery = 450;
@@ -39,6 +39,6 @@ public class GameLoop extends AnimationTimer {
     @Override
     public void handle(long currentNanoTime) {
         update();
-        //renderer.render(playerX, playerY);
+        renderer.render(this.playerx, this.playery);
     }
 }
