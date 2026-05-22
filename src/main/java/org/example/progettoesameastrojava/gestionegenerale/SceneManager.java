@@ -30,7 +30,7 @@ public class SceneManager {
     public void switchToGame(){
         GameScreen gs = new GameScreen();
         BorderPane gameLayout = gs.getLayout();
-        Scene gameScene = new Scene(gameLayout,801,800);
+        Scene gameScene = new Scene(gameLayout,800,500);
         mainStage.setScene(gameScene);
         mainStage.setTitle("AstroJava");
         mainStage.show();
