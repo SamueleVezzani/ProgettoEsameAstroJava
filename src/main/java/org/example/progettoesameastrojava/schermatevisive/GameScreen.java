@@ -32,6 +32,7 @@ public class GameScreen {
 
         rootLayout.setTop(topBar);
         rootLayout.setCenter(centerPane);
+
     }
     public BorderPane getLayout(){
         return rootLayout;
