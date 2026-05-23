@@ -28,7 +28,7 @@ public class GameScreen {
         lblScore = new Label("Punteggio: 0");
         lblLives = new Label("Vite: 3");
         this.sm=sm;
-        gl=new GameLoop(this);
+
 
 
         HBox topBar = new HBox(20);
@@ -65,7 +65,7 @@ public class GameScreen {
         Optional<ButtonType> risultato = alert.showAndWait();
 
         if (risultato.isPresent() && risultato.get() == ButtonType.OK) {
-            gl.stop();
+            //sm.glstop();
             sm.switchToMenu();
         }
     }
