@@ -13,6 +13,7 @@ import org.example.progettoesameastrojava.schermatevisive.MenuScreen;
 
 public class SceneManager {
     private Stage mainStage;
+    private GameLoop gl;
 
     public SceneManager(Stage stage){
         mainStage=stage;
@@ -30,16 +31,10 @@ public class SceneManager {
 
     public void switchToGame(){
         GameScreen gs = new GameScreen(this);
+        gl = new GameLoop(gs);
         BorderPane gameLayout = gs.getLayout();
         Scene gameScene = new Scene(gameLayout,800,500);
 
-        gameScene.setOnKeyPressed(event -> {
-            switch (event.getCode()) {
-                case ESCAPE:
-                    gs.onEscapePressed();
-                    break;
-            }
-        });
 
         mainStage.setScene(gameScene);
         mainStage.setTitle("AstroJava");
@@ -52,5 +47,9 @@ public class SceneManager {
 
     public void exit(){
 
+    }
+
+    public void glstop(){
+        gl.stop();
     }
 }
