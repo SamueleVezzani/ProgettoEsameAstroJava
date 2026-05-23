@@ -31,9 +31,10 @@ public class SceneManager {
 
     public void switchToGame(){
         GameScreen gs = new GameScreen(this);
-        gl = new GameLoop(gs);
         BorderPane gameLayout = gs.getLayout();
         Scene gameScene = new Scene(gameLayout,800,500);
+        gl = new GameLoop(gs,gameScene,this);
+        gl.start();
 
 
         mainStage.setScene(gameScene);

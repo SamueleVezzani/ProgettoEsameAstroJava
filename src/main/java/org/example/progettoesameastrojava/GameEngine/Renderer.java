@@ -17,6 +17,13 @@ public class Renderer {
 
     public void render(double playerX, double playerY) {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        renderPlayer(playerX, playerY);
+
+    }
+
+    private void renderPlayer(double playerX, double playerY) {
+        Image img = AssetManager.getImage("Navicella");
+        gc.drawImage(img, playerX, playerY);
     }
 
     public void renderMap(int[][] map, int tileSize) {

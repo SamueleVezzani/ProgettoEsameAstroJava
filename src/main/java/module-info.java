@@ -4,7 +4,6 @@ module org.example.progettoesameastrojava {
     requires jdk.jfr;
 
 
-    opens org.example.progettoesameastrojava to javafx.fxml;
     exports org.example.progettoesameastrojava.GameEngine;
     opens org.example.progettoesameastrojava.GameEngine to javafx.fxml;
     exports org.example.progettoesameastrojava.gestionegenerale;

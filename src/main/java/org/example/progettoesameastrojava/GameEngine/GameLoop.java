@@ -5,13 +5,13 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
+import org.example.progettoesameastrojava.GameEngine.Entities.Player;
 import org.example.progettoesameastrojava.gestionegenerale.SceneManager;
 import org.example.progettoesameastrojava.schermatevisive.GameScreen;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static jdk.jfr.internal.consumer.EventLog.update;
 
 public class GameLoop extends AnimationTimer {
     private Renderer renderer;
@@ -30,6 +30,7 @@ public class GameLoop extends AnimationTimer {
     private int tileSize = 32;
     private SceneManager sm;
     private Set<KeyCode> activeKeys;
+    private Player player;
 
 
     public GameLoop(GameScreen gm, Scene scena, SceneManager sm){
@@ -38,9 +39,10 @@ public class GameLoop extends AnimationTimer {
         this.activeKeys = new HashSet<>();
         Canvas canvas = gm.getCanvas();
         this.renderer = new Renderer(canvas);
+        player = new Player(100,100);
 
-        this.playerx = 350;
-        this.playery = 450;
+        this.playerx = 0;
+        this.playery = 0;
         this.vel = 5.0;
 
         this.isUp = false;
@@ -62,14 +64,12 @@ public class GameLoop extends AnimationTimer {
                 */
                 case KeyCode.ESCAPE -> sm.switchToMenu();
             }
-
         });
 
     }
 
     @Override
     public void handle(long currentNanoTime) {
-        update();
         renderer.render(this.playerx, this.playery);
     }
 }
