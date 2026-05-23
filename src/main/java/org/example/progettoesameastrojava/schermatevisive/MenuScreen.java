@@ -27,7 +27,7 @@ public class MenuScreen {
     }
     public MenuScreen(SceneManager sm){
         Button btnStart=new Button("GIOCA");
-        Button btnOptions=new Button("OPZIONI");
+        Button btnOptions=new Button(" opzioni di olli ");
         Button btnExit=new Button("ESCI");
 
         rootLayout.setAlignment(Pos.CENTER);
