@@ -3,6 +3,7 @@ package org.example.progettoesameastrojava.GameEngine;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import org.example.progettoesameastrojava.GameEngine.Entities.Player;
 
 public class Renderer {
     //attributi
@@ -15,15 +16,14 @@ public class Renderer {
         this.canvas = canvas;
     }
 
-    public void render(double playerX, double playerY) {
+    public void render(Player player) {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        renderPlayer(playerX, playerY);
+        renderPlayer(player);
 
     }
 
-    private void renderPlayer(double playerX, double playerY) {
-        Image img = AssetManager.getImage("Navicella");
-        gc.drawImage(img, playerX, playerY);
+    private void renderPlayer(Player player) {
+        gc.drawImage(player.getImage(), player.getX(), player.getY());
     }
 
     public void renderMap(int[][] map, int tileSize) {

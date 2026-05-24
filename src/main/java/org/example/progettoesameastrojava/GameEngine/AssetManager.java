@@ -13,7 +13,10 @@ public class AssetManager {
     public static void loadAssets(){
         //utilizzare
         //loadImage("<nome sprite>","/resources/images/<sprite.png>");
-        loadImage("Navicella", "/images/navicella.png");
+        loadImage("NavicellaUp", "/images/navicellaUp.png");
+        loadImage("NavicellaDown", "/images/navicellaDown.png");
+        loadImage("NavicellaLeft", "/images/navicellaLeft.png");
+        loadImage("NavicellaRight", "/images/navicellaRight.png");
     }
 
     private static void loadImage(String key, String filePath) {

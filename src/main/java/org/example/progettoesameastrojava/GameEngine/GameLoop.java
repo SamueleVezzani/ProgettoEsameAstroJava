@@ -4,6 +4,7 @@ package org.example.progettoesameastrojava.GameEngine;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import org.example.progettoesameastrojava.GameEngine.Entities.Player;
 import org.example.progettoesameastrojava.gestionegenerale.SceneManager;
@@ -31,7 +32,7 @@ public class GameLoop extends AnimationTimer {
     private SceneManager sm;
     private Set<KeyCode> activeKeys;
     private Player player;
-
+    public static final double step = 32.0;
 
     public GameLoop(GameScreen gm, Scene scena, SceneManager sm){
         this.gm=gm;
@@ -39,37 +40,39 @@ public class GameLoop extends AnimationTimer {
         this.activeKeys = new HashSet<>();
         Canvas canvas = gm.getCanvas();
         this.renderer = new Renderer(canvas);
-        player = new Player(100,100);
+        player = new Player(0,0, AssetManager.getImage("NavicellaUp.png"));
 
-        this.playerx = 0;
-        this.playery = 0;
-        this.vel = 5.0;
-
-        this.isUp = false;
-        this.isDown = false;
-        this.isLeft = false;
-        this.isRight = false;
 
         scena.setOnKeyPressed(event -> {
             KeyCode code = event.getCode();
-            switch(code){/*
-                case KeyCode.W ->
+            switch (code) {
+                case W: case UP:
+                    player.moveUp();
+                    if (player.getY() < 0) player.setY(0);
                     break;
-                case KeyCode.A ->
+                case S: case DOWN:
+                    player.moveDown();
+                    double maxY = gm.getCanvas().getHeight() - player.getImage().getHeight();
+                    if (player.getY() > maxY) player.setY(maxY);
                     break;
-                case KeyCode.S ->
+                case A: case LEFT:
+                    player.moveLeft();
+                    if (player.getX() < 0) player.setX(0);
                     break;
-                case KeyCode.D ->
+                case D: case RIGHT:
+                    player.moveRight();
+                    double maxX = gm.getCanvas().getWidth() - player.getImage().getWidth();
+                    if (player.getX() > maxX) player.setX(maxX);
                     break;
-                */
-                case KeyCode.ESCAPE -> sm.switchToMenu();
+                case ESCAPE:
+                    sm.switchToMenu();
+                    break;
             }
         });
-
     }
 
     @Override
     public void handle(long currentNanoTime) {
-        renderer.render(this.playerx, this.playery);
+        renderer.render(player);
     }
 }
