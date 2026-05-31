@@ -10,6 +10,9 @@ import org.example.progettoesameastrojava.GameEngine.Entities.Player;
 import org.example.progettoesameastrojava.gestionegenerale.SceneManager;
 import org.example.progettoesameastrojava.schermatevisive.GameScreen;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -70,6 +73,32 @@ public class GameLoop extends AnimationTimer {
             }
         });
     }
+
+    private void loadMap(){
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(
+                getClass().getResourceAsStream("/maps/livello1.txt")))){
+            String[] dimensioni = reader.readLine().split(" ");
+
+            int righe = Integer.parseInt(dimensioni[0]);
+            int colonne = Integer.parseInt(dimensioni[1]);
+
+            map = new int[righe][colonne];
+
+            for (int i = 0; i < righe; i++) {
+                String line = reader.readLine();
+                String[] values = line.split(" ");
+                for (int j = 0; j < colonne; j++) {
+                    map[i][j] = Integer.parseInt(values[j]);
+                }
+            }
+
+        }catch (IOException e){
+            e.printStackTrace();
+            map = new int[0][0];
+        }
+    }
+
+
 
     @Override
     public void handle(long currentNanoTime) {

@@ -33,7 +33,7 @@ public class Renderer {
                 //dentro le virgolette mettere il nome delle chiavi delle sprite per muri
                 String key = switch (tileType) {
                     case 0 -> "";
-                    case 1 -> "";
+                    case 1 -> "MuroMappa";
                     case 2 -> "";
                     case 3 -> "";
                     case 4 -> "";
