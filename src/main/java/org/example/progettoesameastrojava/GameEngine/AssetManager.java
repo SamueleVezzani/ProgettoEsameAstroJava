@@ -22,15 +22,18 @@ public class AssetManager {
 
     private static void loadImage(String key, String filePath) {
         try {
-            // Il percorso deve essere assoluto all'interno delle risorse, es. "/images/Navicella.png"
             InputStream is = AssetManager.class.getResourceAsStream(filePath);
             if (is == null) {
                 System.err.println("Immagine non trovata: " + filePath);
                 return;
             }
-            Image img = new Image(is);
+
+            // Aggiungiamo i parametri 32, 32 per il ridimensionamento
+            // Il costruttore è: Image(InputStream, width, height, preserveRatio, smooth)
+            Image img = new Image(is, 32, 32, true, true);
+
             sprites.put(key, img);
-            System.out.println("Caricata: " + key);
+            System.out.println("Caricata e ridimensionata: " + key);
         } catch (Exception e) {
             System.err.println("Errore nel caricamento di " + key + ": " + e.getMessage());
         }

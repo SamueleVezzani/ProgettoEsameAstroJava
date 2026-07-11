@@ -16,8 +16,13 @@ public class Renderer {
         this.canvas = canvas;
     }
 
-    public void render(Player player) {
+    public void render(Player player, int[][] map, int tileSize) {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+        //inserire renderMap
+
+        renderMap(map,tileSize);
+
         renderPlayer(player);
 
     }
