@@ -21,15 +21,16 @@ public class GameScreen {
     private Label lblLives;
     private GameLoop gl;
     private SceneManager sm;
-    //metodi
+
+
     public GameScreen(SceneManager sm) {
         rootLayout = new BorderPane();
-        gameCanvas = new Canvas(800, 600);
+
+        gameCanvas = new Canvas();
+
         lblScore = new Label("Punteggio: 0");
         lblLives = new Label("Vite: 3");
-        this.sm=sm;
-
-
+        this.sm = sm;
 
         HBox topBar = new HBox(20);
         topBar.setAlignment(Pos.CENTER);
@@ -38,11 +39,12 @@ public class GameScreen {
 
         StackPane centerPane = new StackPane();
         centerPane.getChildren().add(gameCanvas);
-        StackPane.setAlignment(gameCanvas, Pos.CENTER);
+
+        gameCanvas.widthProperty().bind(centerPane.widthProperty());
+        gameCanvas.heightProperty().bind(centerPane.heightProperty());
 
         rootLayout.setTop(topBar);
         rootLayout.setCenter(centerPane);
-
     }
     public BorderPane getLayout(){
         return rootLayout;
