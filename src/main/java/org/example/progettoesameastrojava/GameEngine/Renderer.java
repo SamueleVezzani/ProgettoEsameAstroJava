@@ -12,6 +12,7 @@ public class Renderer {
     private double cameraX = 0;
     private double cameraY = 0;
     private final double lerpFactor = 0.1;
+    private final double zoom = 1.2;
 
     public Renderer(Canvas canvas) {
         gc = canvas.getGraphicsContext2D();
@@ -32,8 +33,11 @@ public class Renderer {
     public void render(Player player, int[][] map, int tileSize) {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        double targetX = player.getX() - (canvas.getWidth() / 2);
-        double targetY = player.getY() - (canvas.getHeight() / 2);
+        double visibleWidth = canvas.getWidth() / zoom;
+        double visibleHeight = canvas.getHeight() / zoom;
+
+        double targetX = player.getX() - (visibleWidth / 2);
+        double targetY = player.getY() - (visibleHeight / 2);
 
         cameraX += (targetX - cameraX) * lerpFactor;
         cameraY += (targetY - cameraY) * lerpFactor;
@@ -41,38 +45,47 @@ public class Renderer {
         double mapWidth = map[0].length * tileSize;
         double mapHeight = map.length * tileSize;
 
-        cameraX = Math.max(0, Math.min(cameraX, mapWidth - canvas.getWidth()));
+        double maxCameraX = Math.max(0, mapWidth - visibleWidth);
+        double maxCameraY = Math.max(0, mapHeight - visibleHeight);
 
-        cameraY = Math.max(0, Math.min(cameraY, mapHeight - canvas.getHeight()));
+        cameraX = Math.max(0, Math.min(cameraX, maxCameraX));
+        cameraY = Math.max(0, Math.min(cameraY, maxCameraY));
 
         renderMap(map, tileSize, cameraX, cameraY);
         renderPlayer(player, cameraX, cameraY, tileSize);
     }
-
     private void renderPlayer(Player player, double cameraX, double cameraY, int tileSize) {
+        double scaledTileSize = tileSize * zoom;
 
-        double drawX = player.getX() - cameraX;
-        double drawY = player.getY() - cameraY;
+        double drawX = (player.getX() - cameraX) * zoom;
+        double drawY = (player.getY() - cameraY) * zoom;
 
-        gc.drawImage(player.getImage(), drawX, drawY);
+        gc.drawImage(player.getImage(), drawX, drawY, scaledTileSize, scaledTileSize);
     }
 
     private void renderMap(int[][] map, int tileSize, double cameraX, double cameraY) {
-        int viewWidth = (int) Math.ceil(canvas.getWidth() / tileSize) + 1;
-        int viewHeight = (int) Math.ceil(canvas.getHeight() / tileSize) + 1;
+        // 1. Definiamo le dimensioni "effettive" di un tile dopo lo zoom
+        double scaledTileSize = tileSize * zoom;
 
+        // 2. Calcoliamo quanto spazio è visibile (in tile) tenendo conto dello zoom
+        // Se zoommiamo, vediamo meno tile, quindi dividiamo per lo zoom
+        int viewWidth = (int) Math.ceil(canvas.getWidth() / scaledTileSize) + 1;
+        int viewHeight = (int) Math.ceil(canvas.getHeight() / scaledTileSize) + 1;
+
+        // 3. Coordinate di partenza (pixel mondo / dimensione tile)
         int startCol = (int) (cameraX / tileSize);
         int startRow = (int) (cameraY / tileSize);
 
-        for (int row = Math.max(0, startRow); row < Math.min(startRow + viewHeight, map.length); row++) {
-            for (int col = Math.max(0, startCol); col < Math.min(startCol + viewWidth, map[0].length); col++) {
+        // 4. Ciclo di rendering
+        for (int row = Math.max(0, startRow); row < Math.min(startRow + viewHeight + 1, map.length); row++) {
+            for (int col = Math.max(0, startCol); col < Math.min(startCol + viewWidth + 1, map[0].length); col++) {
 
-
-                double drawX = (col * tileSize) - cameraX;
-                double drawY = (row * tileSize) - cameraY;
+                // Calcolo posizione: (Posizione Mondo - Camera) * Zoom
+                double drawX = (col * tileSize - cameraX) * zoom;
+                double drawY = (row * tileSize - cameraY) * zoom;
 
                 if (map[row][col] == 1) {
-                    gc.drawImage(AssetManager.getImage("MuroMappa"), drawX, drawY);
+                    gc.drawImage(AssetManager.getImage("MuroMappa"), drawX, drawY, scaledTileSize, scaledTileSize);
                 }
             }
         }

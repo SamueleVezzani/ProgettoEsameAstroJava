@@ -13,7 +13,7 @@ public class Player {
     private boolean isMoving = false;
     private int dx = 0;
     private int dy = 0;
-    private double speed = 8.0;
+    private double speed = 10.0;
 
     public Player(double startX, double startY, Image image) {
         this.x = startX;
