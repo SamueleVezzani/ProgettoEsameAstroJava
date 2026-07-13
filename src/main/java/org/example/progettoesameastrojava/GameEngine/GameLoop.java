@@ -38,42 +38,37 @@ public class GameLoop extends AnimationTimer {
     private Player player;
     public static final double step = 32.0;
 
-    public GameLoop(GameScreen gm, Scene scena, SceneManager sm){
-        this.gm=gm;
+    public GameLoop(GameScreen gm, Scene scena, SceneManager sm) {
+        this.gm = gm;
         this.sm = sm;
         this.activeKeys = new HashSet<>();
         Canvas canvas = gm.getCanvas();
         this.renderer = new Renderer(canvas);
-        loadMap();
-        player = new Player(0,0, AssetManager.getImage("NavicellaUp.png"));
 
+        loadMap();
+        int[] startPos = findPlayerStartPosition();
+        player = new Player(startPos[1] * tileSize, startPos[0] * tileSize, AssetManager.getImage("NavicellaUp.png"));
 
         scena.setOnKeyPressed(event -> {
-            KeyCode code = event.getCode();
-            switch (code) {
-                case W: case UP:
-                    player.moveUp();
-                    if (player.getY() < 0) player.setY(0);
-                    break;
-                case S: case DOWN:
-                    player.moveDown();
-                    double maxY = gm.getCanvas().getHeight() - player.getImage().getHeight();
-                    if (player.getY() > maxY) player.setY(maxY);
-                    break;
-                case A: case LEFT:
-                    player.moveLeft();
-                    if (player.getX() < 0) player.setX(0);
-                    break;
-                case D: case RIGHT:
-                    player.moveRight();
-                    double maxX = gm.getCanvas().getWidth() - player.getImage().getWidth();
-                    if (player.getX() > maxX) player.setX(maxX);
-                    break;
-                case ESCAPE:
-                    sm.switchToMenu();
-                    break;
+            switch (event.getCode()) {
+                case W: case UP:    player.startMoving(0, -1); break;
+                case S: case DOWN:  player.startMoving(0, 1);  break;
+                case A: case LEFT:  player.startMoving(-1, 0); break;
+                case D: case RIGHT: player.startMoving(1, 0);  break;
+                case ESCAPE:        sm.switchToMenu(); break;
             }
         });
+    }
+
+    private int[] findPlayerStartPosition() {
+        for (int r = 0; r < map.length; r++) {
+            for (int c = 0; c < map[r].length; c++) {
+                if (map[r][c] == 2) {
+                    return new int[]{r, c};
+                }
+            }
+        }
+        return new int[]{0, 0};
     }
 
     private void loadMap() {
@@ -106,9 +101,22 @@ public class GameLoop extends AnimationTimer {
         }
     }
 
+    private boolean isWall(double x, double y) {
+
+        int col = (int) (x / tileSize);
+        int row = (int) (y / tileSize);
+
+        if (row < 0 || row >= map.length || col < 0 || col >= map[0].length) {
+            return true;
+        }
+
+        return map[row][col] == 1;
+    }
+
 
     @Override
-    public void handle(long currentNanoTime) {
+    public void handle(long now) {
+        player.update(map, tileSize);
+
         renderer.render(player, map, tileSize);
-    }
-}
+    }}
