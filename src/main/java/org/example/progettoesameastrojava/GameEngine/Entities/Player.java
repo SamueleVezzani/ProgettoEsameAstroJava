@@ -6,6 +6,7 @@ import org.example.progettoesameastrojava.GameEngine.GameLoop;
 
 public class Player {
     private double x, y;
+    private double startX,startY;
     private int lives;
     private int score;
     private Image image;
@@ -20,6 +21,8 @@ public class Player {
     public Player(double startX, double startY, Image image) {
         this.x = startX;
         this.y = startY;
+        this.startX = startX;
+        this.startY = startY;
         this.image = AssetManager.getImage("NavicellaUp"); // Immagine di default
         this.lives = 3;
         this.score = 0;
@@ -122,7 +125,18 @@ public class Player {
         if(this.lives == 0){
 
         }
+        resetToStart();
+    }
 
+    public void resetToStart(){
+        this.x = this.startX;
+        this.y = this.startY;
+
+        this.isMoving = false;
+        this.dx = 0;
+        this.dy = 0;
+
+        this.image = AssetManager.getImage("NavicellaUp");
     }
 
     public boolean needsHUDUpdate() {return needsHUDUpdate;}
