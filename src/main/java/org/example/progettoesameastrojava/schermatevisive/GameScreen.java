@@ -53,8 +53,8 @@ public class GameScreen {
         return gameCanvas;
     }
     public void updateHUD(int score, int lives){
-        this.lblScore.setText(String.valueOf(score));
-        this.lblLives.setText(String.valueOf(lives));
+        this.lblScore.setText("Punteggio: "+String.valueOf(score));
+        this.lblLives.setText(String.valueOf("Vite: "+lives));
     }
 
 
