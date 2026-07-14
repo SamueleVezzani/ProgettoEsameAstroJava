@@ -24,6 +24,7 @@ public class Player {
     private final long frameDuration = 200_000_000;
 
     private boolean isGameOver = false;
+    private boolean hasReachedPortal = false;
 
     public Player(double startX, double startY) {
         this.x = startX;
@@ -65,6 +66,8 @@ public class Player {
     }
 
     public boolean isGameOver(){ return isGameOver;}
+
+    public boolean hasReachedPortal(){ return hasReachedPortal;}
     //setter
 
     public void setLives(int lives) {
@@ -73,6 +76,22 @@ public class Player {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public void setX(double x){
+        this.x = x;
+    }
+
+    public void setY(double y){
+        this.y = y;
+    }
+
+    public void setStartX(double startX){
+        this.startX = startX;
+    }
+
+    public void setStartY(double startY){
+        this.startY = startY;
     }
 
     public void startMoving(int newDx, int newDy) {
@@ -124,13 +143,11 @@ public class Player {
 
         int nextCol = (int) ((nextX + (dx > 0 ? tileSize - 1 : 0)) / tileSize);
         int nextRow = (int) ((nextY + (dy > 0 ? tileSize - 1 : 0)) / tileSize);
-        if(map[nextRow][nextCol] == 4){
-            isMoving = false;
-            dx = 0;
-            dy = 0;
+        if(map[nextRow][nextCol] == 4 && !hasReachedPortal ){
             System.out.println("fine livello");
-
-            NextLevel();
+            x = nextX;
+            y = nextY;
+            hasReachedPortal = true;
             return;
         }
         else if(map[nextRow][nextCol] == 5){
@@ -175,8 +192,14 @@ public class Player {
         resetToStart();
     }
 
-    public void NextLevel(){
+    public void stop(){
+        this.isMoving = false;
+        this.dx = 0;
+        this.dy = 0;
 
+        this.image = AssetManager.getImage("NavicellaUp");
+        this.frames = new Image[]{ this.image, AssetManager.getImage("NavicellaUpHighFlame") };
+        this.currentFrameIndex = 0;
     }
 
     public void resetToStart() {
@@ -194,4 +217,5 @@ public class Player {
 
     public boolean needsHUDUpdate() {return needsHUDUpdate;}
     public void setHUDUpdated(){ needsHUDUpdate = false;}
+    public void notReachedPortal(){hasReachedPortal = false;}
 }

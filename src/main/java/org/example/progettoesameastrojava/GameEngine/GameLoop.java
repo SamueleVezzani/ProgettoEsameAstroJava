@@ -27,6 +27,8 @@ public class GameLoop extends AnimationTimer {
     private Set<KeyCode> activeKeys;
     private Player player;
     public static final double step = 32.0;
+    private final String[] maps = new String[]{"map1", "map2", "map3"};
+    private int currentMap = 0;
 
 
     public GameLoop(GameScreen gm, Scene scena, SceneManager sm) {
@@ -63,7 +65,7 @@ public class GameLoop extends AnimationTimer {
     }
 
     private void loadMap() {
-        try (var stream = getClass().getResourceAsStream("/maps/map1")) {
+        try (var stream = getClass().getResourceAsStream("/maps/"+maps[currentMap])) {
             if (stream == null) throw new IOException("File non trovato!");
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
@@ -91,6 +93,19 @@ public class GameLoop extends AnimationTimer {
         }
     }
 
+    private void nextLevel(){
+        this.loadMap();
+        int[] startPos = findPlayerStartPosition();
+        startPos[0]*=tileSize;
+        startPos[1]*=tileSize;
+        player.setX(startPos[1]);
+        player.setY(startPos[0]);
+        player.setStartX(startPos[1]);
+        player.setStartY(startPos[0]);
+        player.setScore(0);
+        player.setLives(3);
+        player.stop();
+    }
 
     @Override
     public void handle(long now) {
@@ -102,6 +117,12 @@ public class GameLoop extends AnimationTimer {
         if(player.isGameOver()){
             gm.showGameOver(this);
             return;
+        }
+        if(player.hasReachedPortal()){
+            player.notReachedPortal();
+            currentMap +=1;
+            nextLevel();
+            System.out.println("Livello:" + currentMap);
         }
 
         renderer.render(player, map, tileSize);
