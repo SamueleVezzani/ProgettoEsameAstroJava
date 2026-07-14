@@ -72,6 +72,7 @@ public class GameScreen {
         }
     }
 
+
     public void onEscapePressed() {
         richiediConfermaRitornoMenu();
     }

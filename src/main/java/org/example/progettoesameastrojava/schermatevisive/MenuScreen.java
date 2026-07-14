@@ -11,23 +11,22 @@ public class MenuScreen {
     private VBox rootLayout = new VBox(20);
 
     private void richiediConfermaUscita() {
-        // 1. Crea la finestrina di tipo CONFIRMATION
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Uscita dal Gioco");
         alert.setHeaderText("Stai per uscire dal gioco.");
         alert.setContentText("Sei sicuro di voler uscire davvero?");
 
-        // 2. Mostra la finestra e aspetta che l'utente clicchi un pulsante
         Optional<ButtonType> risultato = alert.showAndWait();
 
-        // 3. Se l'utente clicca su OK, chiudi l'applicazione
         if (risultato.isPresent() && risultato.get() == ButtonType.OK) {
             System.exit(0);
         }
     }
+
+
     public MenuScreen(SceneManager sm){
         Button btnStart=new Button("GIOCA");
-        Button btnOptions=new Button(" opzioni di olli ");
+        Button btnOptions=new Button(" opzioni");
         Button btnExit=new Button("ESCI");
 
         rootLayout.setAlignment(Pos.CENTER);
