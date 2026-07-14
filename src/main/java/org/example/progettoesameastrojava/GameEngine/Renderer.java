@@ -33,6 +33,11 @@ public class Renderer {
     public void render(Player player, int[][] map, int tileSize) {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
+        double canvasWidth = this.canvas.getWidth();
+        double canvasHeight = this.canvas.getHeight();
+
+        gc.drawImage(AssetManager.getImage("SfondoSpazio"), 0, 0, canvasWidth, canvasHeight);
+
         double visibleWidth = canvas.getWidth() / zoom;
         double visibleHeight = canvas.getHeight() / zoom;
 
