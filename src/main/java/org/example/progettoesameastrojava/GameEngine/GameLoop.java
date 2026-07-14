@@ -21,16 +21,6 @@ import java.util.Set;
 public class GameLoop extends AnimationTimer {
     private Renderer renderer;
     private GameScreen gm;
-    private boolean running;
-    private double playerx;
-    private double playery;
-    private double vel;
-    private int score;
-    private int lives;
-    private boolean isUp;
-    private boolean isDown;
-    private boolean isLeft;
-    private boolean isRight;
     private int[][] map;
     private int tileSize = 32;
     private SceneManager sm;
@@ -47,7 +37,7 @@ public class GameLoop extends AnimationTimer {
 
         loadMap();
         int[] startPos = findPlayerStartPosition();
-        player = new Player(startPos[1] * tileSize, startPos[0] * tileSize, AssetManager.getImage("NavicellaUp.png"));
+        player = new Player(startPos[1] * tileSize, startPos[0] * tileSize);
 
         scena.setOnKeyPressed(event -> {
             switch (event.getCode()) {
@@ -116,7 +106,7 @@ public class GameLoop extends AnimationTimer {
 
     @Override
     public void handle(long now) {
-        player.update(map, tileSize);
+        player.update(map, tileSize, now);
 
         if(player.needsHUDUpdate()){
             this.gm.updateHUD(player.getScore(), player.getLives());

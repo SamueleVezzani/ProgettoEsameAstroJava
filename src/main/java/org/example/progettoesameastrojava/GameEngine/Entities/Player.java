@@ -2,7 +2,6 @@ package org.example.progettoesameastrojava.GameEngine.Entities;
 
 import javafx.scene.image.Image;
 import org.example.progettoesameastrojava.GameEngine.AssetManager;
-import org.example.progettoesameastrojava.GameEngine.GameLoop;
 
 public class Player {
     private double x, y;
@@ -14,16 +13,23 @@ public class Player {
     private boolean isMoving = false;
     private int dx = 0;
     private int dy = 0;
-    private double speed = 10.0;
+    private double speed = 4.0;
 
     private boolean needsHUDUpdate = false;
 
-    public Player(double startX, double startY, Image image) {
+    private Image[] frames;
+    private int currentFrameIndex = 0;
+
+    private long lastFrameTime = 0;
+    private final long frameDuration = 200_000_000;
+
+    public Player(double startX, double startY) {
         this.x = startX;
         this.y = startY;
         this.startX = startX;
         this.startY = startY;
-        this.image = AssetManager.getImage("NavicellaUp"); // Immagine di default
+        this.image = AssetManager.getImage("NavicellaUp");
+        this.frames = new Image[]{ this.image, AssetManager.getImage("NavicellaUpHighFlame") };
         this.lives = 3;
         this.score = 0;
 
@@ -50,17 +56,12 @@ public class Player {
     }
 
     public Image getImage() {
-        return (image != null) ? image : AssetManager.getImage("NavicellaUp.png");
+        if (frames != null && frames.length > 0) {
+            return frames[currentFrameIndex];
+        }
+        return image;
     }
-
     //setter
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
 
     public void setLives(int lives) {
         this.lives = lives;
@@ -70,25 +71,49 @@ public class Player {
         this.score = score;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
-    }
-
     public void startMoving(int newDx, int newDy) {
         if (!isMoving) {
             this.dx = newDx;
             this.dy = newDy;
             this.isMoving = true;
 
-            if (dx == 1) this.image = AssetManager.getImage("NavicellaRight");
-            else if (dx == -1) this.image = AssetManager.getImage("NavicellaLeft");
-            else if (dy == 1) this.image = AssetManager.getImage("NavicellaDown");
-            else if (dy == -1) this.image = AssetManager.getImage("NavicellaUp");
+            if (dx == 1) {
+                this.image = AssetManager.getImage("NavicellaRight");
+                this.frames = new Image[]{ this.image, AssetManager.getImage("NavicellaRightHighFlame") };
+            } else if (dx == -1) {
+                this.image = AssetManager.getImage("NavicellaLeft");
+                this.frames = new Image[]{ this.image, AssetManager.getImage("NavicellaLeftHighFlame") };
+            } else if (dy == 1) {
+                this.image = AssetManager.getImage("NavicellaDown");
+                this.frames = new Image[]{ this.image, AssetManager.getImage("NavicellaDownHighFlame") };
+            } else if (dy == -1) {
+                this.image = AssetManager.getImage("NavicellaUp");
+                this.frames = new Image[]{ this.image, AssetManager.getImage("NavicellaUpHighFlame") };
+            }
+
+            this.currentFrameIndex = 0;
+            this.lastFrameTime = 0;
         }
     }
 
-    public void update(int[][] map, int tileSize) {
+    public void update(int[][] map, int tileSize, long now) {
+
+        if (isMoving && frames != null && frames.length > 0) {
+            if (lastFrameTime == 0) {
+                lastFrameTime = now;
+            }
+
+            if (now - lastFrameTime >= frameDuration) {
+                currentFrameIndex = (currentFrameIndex + 1) % frames.length;
+                lastFrameTime = now;
+            }
+        } else {
+            currentFrameIndex = 0;
+            lastFrameTime = 0;
+        }
+
         if (!isMoving) return;
+
 
         double nextX = x + (dx * speed);
         double nextY = y + (dy * speed);
@@ -128,7 +153,7 @@ public class Player {
         resetToStart();
     }
 
-    public void resetToStart(){
+    public void resetToStart() {
         this.x = this.startX;
         this.y = this.startY;
 
@@ -137,6 +162,8 @@ public class Player {
         this.dy = 0;
 
         this.image = AssetManager.getImage("NavicellaUp");
+        this.frames = new Image[]{ this.image, AssetManager.getImage("NavicellaUpHighFlame") };
+        this.currentFrameIndex = 0;
     }
 
     public boolean needsHUDUpdate() {return needsHUDUpdate;}
