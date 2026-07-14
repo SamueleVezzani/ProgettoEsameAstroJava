@@ -25,6 +25,10 @@ public class AssetManager {
         loadImage("NavicellaDownHighFlame","/images/NavicellaDownHighFlame.png");
         loadImage("NavicellaLeftHighFlame","/images/NavicellaLeftHighFlame.png");
         loadImage("PortaleFineLivello","/images/PortaleFineLivello.png");
+        loadImage("Stella","/images/Stella.png");
+        loadImage("Stellina","/images/Stellina.png");
+
+
     }
 
     private static void loadImage(String key, String filePath) {

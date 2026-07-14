@@ -133,6 +133,16 @@ public class Player {
             NextLevel();
             return;
         }
+        else if(map[nextRow][nextCol] == 5){
+            this.score += 10;
+            needsHUDUpdate = true;
+            map[nextRow][nextCol] = 0;
+        }
+        else if(map[nextRow][nextCol] == 6){
+            this.score += 500;
+            needsHUDUpdate = true;
+            map[nextRow][nextCol] = 0;
+        }
         else if(map[nextRow][nextCol] == 3){
 
             isMoving = false;

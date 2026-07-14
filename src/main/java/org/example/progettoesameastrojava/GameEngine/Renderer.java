@@ -92,6 +92,12 @@ public class Renderer {
                 if(map[row][col] == 4) {
                     gc.drawImage(AssetManager.getImage("PortaleFineLivello"),drawX, drawY, scaledTileSize, scaledTileSize);
                 }
+                if(map[row][col] == 5){
+                    gc.drawImage(AssetManager.getImage("Stellina"),drawX, drawY, scaledTileSize, scaledTileSize);
+                }
+                if(map[row][col] == 6){
+                    gc.drawImage(AssetManager.getImage("Stella"),drawX+8, drawY+8, scaledTileSize-16, scaledTileSize-16);
+                }
             }
         }
     }
