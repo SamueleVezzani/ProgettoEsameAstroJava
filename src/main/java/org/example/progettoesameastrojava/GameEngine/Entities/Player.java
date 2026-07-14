@@ -23,6 +23,8 @@ public class Player {
     private long lastFrameTime = 0;
     private final long frameDuration = 200_000_000;
 
+    private boolean isGameOver = false;
+
     public Player(double startX, double startY) {
         this.x = startX;
         this.y = startY;
@@ -61,6 +63,8 @@ public class Player {
         }
         return image;
     }
+
+    public boolean isGameOver(){ return isGameOver;}
     //setter
 
     public void setLives(int lives) {
@@ -120,8 +124,16 @@ public class Player {
 
         int nextCol = (int) ((nextX + (dx > 0 ? tileSize - 1 : 0)) / tileSize);
         int nextRow = (int) ((nextY + (dy > 0 ? tileSize - 1 : 0)) / tileSize);
+        if(map[nextRow][nextCol] == 4){
+            isMoving = false;
+            dx = 0;
+            dy = 0;
+            System.out.println("fine livello");
 
-        if(map[nextRow][nextCol] == 3){
+            NextLevel();
+            return;
+        }
+        else if(map[nextRow][nextCol] == 3){
 
             isMoving = false;
             dx = 0;
@@ -131,7 +143,7 @@ public class Player {
             LoseALife();
             return;
         }
-        if (map[nextRow][nextCol] == 1) {
+        else if (map[nextRow][nextCol] == 1) {
             isMoving = false;
             dx = 0;
             dy = 0;
@@ -148,9 +160,13 @@ public class Player {
         needsHUDUpdate = true;
         System.out.println(this.lives);
         if(this.lives == 0){
-
+            isGameOver = true;
         }
         resetToStart();
+    }
+
+    public void NextLevel(){
+
     }
 
     public void resetToStart() {

@@ -89,6 +89,9 @@ public class Renderer {
                 if (map[row][col] == 3) {
                     gc.drawImage(AssetManager.getImage("MuroOstacolo"), drawX, drawY, scaledTileSize, scaledTileSize);
                 }
+                if(map[row][col] == 4) {
+                    gc.drawImage(AssetManager.getImage("PortaleFineLivello"),drawX, drawY, scaledTileSize, scaledTileSize);
+                }
             }
         }
     }

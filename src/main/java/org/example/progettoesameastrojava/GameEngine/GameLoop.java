@@ -28,6 +28,7 @@ public class GameLoop extends AnimationTimer {
     private Player player;
     public static final double step = 32.0;
 
+
     public GameLoop(GameScreen gm, Scene scena, SceneManager sm) {
         this.gm = gm;
         this.sm = sm;
@@ -69,7 +70,7 @@ public class GameLoop extends AnimationTimer {
                 String line = reader.readLine();
                 if (line == null) return;
 
-                String[] dimensioni = line.trim().split("\\s+"); // \\s+ gestisce più spazi consecutivi
+                String[] dimensioni = line.trim().split("\\s+");
                 int righe = Integer.parseInt(dimensioni[0]);
                 int colonne = Integer.parseInt(dimensioni[1]);
 
@@ -77,8 +78,7 @@ public class GameLoop extends AnimationTimer {
 
                 for (int i = 0; i < righe; i++) {
                     line = reader.readLine();
-                    if (line == null) break; // Protezione se il file finisce prima
-
+                    if (line == null) break;
                     String[] values = line.trim().split("\\s+");
                     for (int j = 0; j < colonne && j < values.length; j++) {
                         map[i][j] = Integer.parseInt(values[j]);
@@ -91,18 +91,6 @@ public class GameLoop extends AnimationTimer {
         }
     }
 
-    private boolean isWall(double x, double y) {
-
-        int col = (int) (x / tileSize);
-        int row = (int) (y / tileSize);
-
-        if (row < 0 || row >= map.length || col < 0 || col >= map[0].length) {
-            return true;
-        }
-
-        return map[row][col] == 1;
-    }
-
 
     @Override
     public void handle(long now) {
@@ -111,7 +99,10 @@ public class GameLoop extends AnimationTimer {
         if(player.needsHUDUpdate()){
             this.gm.updateHUD(player.getScore(), player.getLives());
         }
-
+        if(player.isGameOver()){
+            gm.showGameOver(this);
+            return;
+        }
 
         renderer.render(player, map, tileSize);
     }}

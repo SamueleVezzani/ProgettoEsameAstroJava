@@ -56,7 +56,7 @@ public class GameScreen {
         Button btnRetry = new Button("Riprova");
         btnRetry.setStyle("-fx-font-size: 16px; -fx-padding: 10 20 10 20;");
         btnRetry.setOnAction(e -> {
-            //resetGioco(); // Metodo per resettare il gioco
+            sm.switchToGame();
         });
 
         Button btnMenu = new Button("Torna al Menu");
@@ -80,7 +80,7 @@ public class GameScreen {
         rootLayout.setCenter(centerPane);
     }
 
-    public void showGameOver() {
+    public void showGameOver(GameLoop gl) {
         gl.stop();
         gameOverPanel.setVisible(true);
     }
