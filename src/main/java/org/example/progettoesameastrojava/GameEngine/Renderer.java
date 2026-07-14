@@ -12,7 +12,7 @@ public class Renderer {
     private double cameraX = 0;
     private double cameraY = 0;
     private final double lerpFactor = 0.1;
-    private final double zoom = 1.2;
+    private final double zoom = 1.5;
 
     public Renderer(Canvas canvas) {
         gc = canvas.getGraphicsContext2D();
