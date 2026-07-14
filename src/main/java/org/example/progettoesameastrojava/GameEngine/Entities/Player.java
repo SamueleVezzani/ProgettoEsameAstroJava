@@ -15,6 +15,8 @@ public class Player {
     private int dy = 0;
     private double speed = 10.0;
 
+    private boolean needsHUDUpdate = false;
+
     public Player(double startX, double startY, Image image) {
         this.x = startX;
         this.y = startY;
@@ -75,7 +77,6 @@ public class Player {
             this.dy = newDy;
             this.isMoving = true;
 
-            // Cambia immagine in base alla direzione
             if (dx == 1) this.image = AssetManager.getImage("NavicellaRight");
             else if (dx == -1) this.image = AssetManager.getImage("NavicellaLeft");
             else if (dy == 1) this.image = AssetManager.getImage("NavicellaDown");
@@ -83,17 +84,25 @@ public class Player {
         }
     }
 
-    // Metodo per aggiornare la posizione ad ogni frame
     public void update(int[][] map, int tileSize) {
         if (!isMoving) return;
 
-        // Calcoliamo la posizione futura che avremmo al prossimo passo
         double nextX = x + (dx * speed);
         double nextY = y + (dy * speed);
 
         int nextCol = (int) ((nextX + (dx > 0 ? tileSize - 1 : 0)) / tileSize);
         int nextRow = (int) ((nextY + (dy > 0 ? tileSize - 1 : 0)) / tileSize);
 
+        if(map[nextRow][nextCol] == 3){
+
+            isMoving = false;
+            dx = 0;
+            dy = 0;
+
+            System.out.println("Sei morto");
+            LoseALife();
+            return;
+        }
         if (map[nextRow][nextCol] == 1) {
             isMoving = false;
             dx = 0;
@@ -106,17 +115,16 @@ public class Player {
             y = nextY;
         }
     }
+    public void LoseALife(){
+        lives--;
+        needsHUDUpdate = true;
+        System.out.println(this.lives);
+        if(this.lives == 0){
 
-    private boolean checkCollision(double nextX, double nextY, int[][] map, int tileSize) {
-        int col = (int) (nextX / tileSize);
-        int row = (int) (nextY / tileSize);
+        }
 
-        if (row < 0 || row >= map.length || col < 0 || col >= map[0].length) return true;
-
-        return map[row][col] == 1;
     }
 
-
-
-
+    public boolean needsHUDUpdate() {return needsHUDUpdate;}
+    public void setHUDUpdated(){ needsHUDUpdate = false;}
 }

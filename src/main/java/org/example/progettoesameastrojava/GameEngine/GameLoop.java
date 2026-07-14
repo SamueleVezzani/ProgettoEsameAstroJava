@@ -97,7 +97,7 @@ public class GameLoop extends AnimationTimer {
             }
         } catch (IOException | NumberFormatException e) {
             System.err.println("Errore nel caricamento mappa: " + e.getMessage());
-            map = new int[0][0]; // Fallback di sicurezza
+            map = new int[0][0];
         }
     }
 
@@ -117,6 +117,11 @@ public class GameLoop extends AnimationTimer {
     @Override
     public void handle(long now) {
         player.update(map, tileSize);
+
+        if(player.needsHUDUpdate()){
+            this.gm.updateHUD(player.getScore(), player.getLives());
+        }
+
 
         renderer.render(player, map, tileSize);
     }}

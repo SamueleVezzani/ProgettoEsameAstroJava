@@ -18,6 +18,7 @@ public class AssetManager {
         loadImage("NavicellaLeft", "/images/navicellaLeft.png");
         loadImage("NavicellaRight", "/images/navicellaRight.png");
         loadImage("MuroMappa","/images/MuroSingolo.png");
+        loadImage("MuroOstacolo", "/images/MuroOstacolo.png");
     }
 
     private static void loadImage(String key, String filePath) {

@@ -64,28 +64,25 @@ public class Renderer {
     }
 
     private void renderMap(int[][] map, int tileSize, double cameraX, double cameraY) {
-        // 1. Definiamo le dimensioni "effettive" di un tile dopo lo zoom
         double scaledTileSize = tileSize * zoom;
 
-        // 2. Calcoliamo quanto spazio è visibile (in tile) tenendo conto dello zoom
-        // Se zoommiamo, vediamo meno tile, quindi dividiamo per lo zoom
         int viewWidth = (int) Math.ceil(canvas.getWidth() / scaledTileSize) + 1;
         int viewHeight = (int) Math.ceil(canvas.getHeight() / scaledTileSize) + 1;
 
-        // 3. Coordinate di partenza (pixel mondo / dimensione tile)
         int startCol = (int) (cameraX / tileSize);
         int startRow = (int) (cameraY / tileSize);
 
-        // 4. Ciclo di rendering
         for (int row = Math.max(0, startRow); row < Math.min(startRow + viewHeight + 1, map.length); row++) {
             for (int col = Math.max(0, startCol); col < Math.min(startCol + viewWidth + 1, map[0].length); col++) {
 
-                // Calcolo posizione: (Posizione Mondo - Camera) * Zoom
                 double drawX = (col * tileSize - cameraX) * zoom;
                 double drawY = (row * tileSize - cameraY) * zoom;
 
                 if (map[row][col] == 1) {
                     gc.drawImage(AssetManager.getImage("MuroMappa"), drawX, drawY, scaledTileSize, scaledTileSize);
+                }
+                if (map[row][col] == 3) {
+                    gc.drawImage(AssetManager.getImage("MuroOstacolo"), drawX, drawY, scaledTileSize, scaledTileSize);
                 }
             }
         }
