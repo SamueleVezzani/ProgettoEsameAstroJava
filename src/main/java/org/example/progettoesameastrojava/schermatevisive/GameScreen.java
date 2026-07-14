@@ -10,6 +10,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import org.example.progettoesameastrojava.GameEngine.GameLoop;
 import org.example.progettoesameastrojava.gestionegenerale.SceneManager;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
+
+
 
 import java.util.Optional;
 
@@ -22,23 +26,52 @@ public class GameScreen {
     private GameLoop gl;
     private SceneManager sm;
 
+    private StackPane root;
+    private VBox gameOverPanel;
 
     public GameScreen(SceneManager sm) {
-        rootLayout = new BorderPane();
-
-        gameCanvas = new Canvas();
-
-        lblScore = new Label("Punteggio: 0");
-        lblLives = new Label("Vite: 3");
         this.sm = sm;
 
+        rootLayout = new BorderPane();
+        gameCanvas = new Canvas();
+        lblScore = new Label("Punteggio: 0");
+        lblLives = new Label("Vite: 3");
+
+        initLayout();
+    }
+
+    private void initLayout() {
         HBox topBar = new HBox(20);
         topBar.setAlignment(Pos.CENTER);
         topBar.getChildren().addAll(lblScore, lblLives);
         topBar.setStyle("-fx-padding: 10; -fx-background-color: lightgray;");
 
+        gameOverPanel = new VBox(20);
+        gameOverPanel.setAlignment(Pos.CENTER);
+        gameOverPanel.setStyle("-fx-background-color: rgba(0, 0, 0, 0.75);");
+
+        Label lblGameOver = new Label("GAME OVER");
+        lblGameOver.setStyle("-fx-font-size: 40px; -fx-text-fill: red; -fx-font-weight: bold;");
+
+        Button btnRetry = new Button("Riprova");
+        btnRetry.setStyle("-fx-font-size: 16px; -fx-padding: 10 20 10 20;");
+        btnRetry.setOnAction(e -> {
+            //resetGioco(); // Metodo per resettare il gioco
+        });
+
+        Button btnMenu = new Button("Torna al Menu");
+        btnMenu.setStyle("-fx-font-size: 16px; -fx-padding: 10 20 10 20;");
+        btnMenu.setOnAction(e -> {
+            sm.switchToMenu();
+        });
+
+        gameOverPanel.getChildren().addAll(lblGameOver, btnRetry, btnMenu);
+
+        gameOverPanel.setVisible(false);
+
         StackPane centerPane = new StackPane();
-        centerPane.getChildren().add(gameCanvas);
+
+        centerPane.getChildren().addAll(gameCanvas, gameOverPanel);
 
         gameCanvas.widthProperty().bind(centerPane.widthProperty());
         gameCanvas.heightProperty().bind(centerPane.heightProperty());
@@ -46,6 +79,12 @@ public class GameScreen {
         rootLayout.setTop(topBar);
         rootLayout.setCenter(centerPane);
     }
+
+    public void showGameOver() {
+        gl.stop();
+        gameOverPanel.setVisible(true);
+    }
+
     public BorderPane getLayout(){
         return rootLayout;
     }
@@ -67,7 +106,7 @@ public class GameScreen {
         Optional<ButtonType> risultato = alert.showAndWait();
 
         if (risultato.isPresent() && risultato.get() == ButtonType.OK) {
-            //sm.glstop();
+            sm.glstop();
             sm.switchToMenu();
         }
     }

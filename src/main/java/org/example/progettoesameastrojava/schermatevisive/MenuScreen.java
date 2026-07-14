@@ -26,15 +26,12 @@ public class MenuScreen {
 
     public MenuScreen(SceneManager sm){
         Button btnStart=new Button("GIOCA");
-        Button btnOptions=new Button(" opzioni");
         Button btnExit=new Button("ESCI");
 
         rootLayout.setAlignment(Pos.CENTER);
-        rootLayout.getChildren().addAll(btnStart,btnOptions,btnExit);
+        rootLayout.getChildren().addAll(btnStart,btnExit);
 
         btnStart.setOnAction(e->sm.switchToGame());
-
-        btnOptions.setOnAction(e->sm.switchToMenu());
 
         btnExit.setOnAction(e->richiediConfermaUscita());
 
