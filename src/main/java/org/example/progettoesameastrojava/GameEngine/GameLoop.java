@@ -27,7 +27,7 @@ public class GameLoop extends AnimationTimer {
     private Set<KeyCode> activeKeys;
     private Player player;
     public static final double step = 32.0;
-    private final String[] maps = new String[]{"map1", "map2", "map3"};
+    private final String[] maps = new String[]{"map1", "map2","map3"};
     private int currentMap = 0;
 
 
@@ -118,11 +118,18 @@ public class GameLoop extends AnimationTimer {
             gm.showGameOver(this);
             return;
         }
-        if(player.hasReachedPortal()){
+        if (player.hasReachedPortal()) {
             player.notReachedPortal();
-            currentMap +=1;
-            nextLevel();
-            System.out.println("Livello:" + currentMap);
+
+            if (currentMap + 1 < maps.length) {
+                currentMap += 1;
+                nextLevel();
+                System.out.println("Livello: " + (currentMap + 1));
+            } else {
+                System.out.println("Gioco Completato!");
+                gm.showVictory(this);
+                return;
+            }
         }
 
         renderer.render(player, map, tileSize);

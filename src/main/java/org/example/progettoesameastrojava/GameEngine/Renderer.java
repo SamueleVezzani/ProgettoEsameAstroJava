@@ -98,6 +98,18 @@ public class Renderer {
                 if(map[row][col] == 6){
                     gc.drawImage(AssetManager.getImage("Stella"),drawX+8, drawY+8, scaledTileSize-16, scaledTileSize-16);
                 }
+                if(map[row][col] == 7){
+                    gc.drawImage(AssetManager.getImage("TrampolinoBottomLeft"),drawX, drawY+16, scaledTileSize-16, scaledTileSize-16);
+                }
+                if(map[row][col] == 8){
+                    gc.drawImage(AssetManager.getImage("TrampolinoBottomRight"),drawX+16, drawY+16, scaledTileSize-16, scaledTileSize-16);
+                }
+                if(map[row][col] == 9){
+                    gc.drawImage(AssetManager.getImage("TrampolinoTopLeft"),drawX, drawY, scaledTileSize-16, scaledTileSize-16);
+                }
+                if(map[row][col] == 10){
+                    gc.drawImage(AssetManager.getImage("TrampolinoTopRight"),drawX+16, drawY, scaledTileSize-16, scaledTileSize-16);
+                }
             }
         }
     }

@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import org.example.progettoesameastrojava.GameEngine.GameLoop;
 import org.example.progettoesameastrojava.gestionegenerale.SceneManager;
 import javafx.scene.layout.VBox;
@@ -25,6 +26,7 @@ public class GameScreen {
     private Label lblLives;
     private GameLoop gl;
     private SceneManager sm;
+    private VBox victoryPanel;
 
     private StackPane root;
     private VBox gameOverPanel;
@@ -33,7 +35,7 @@ public class GameScreen {
         this.sm = sm;
 
         rootLayout = new BorderPane();
-        gameCanvas = new Canvas();
+        gameCanvas = new Canvas(800, 500);
         lblScore = new Label("Punteggio: 0");
         lblLives = new Label("Vite: 3");
 
@@ -46,6 +48,7 @@ public class GameScreen {
         topBar.getChildren().addAll(lblScore, lblLives);
         topBar.setStyle("-fx-padding: 10; -fx-background-color: lightgray;");
 
+        // --- Pannello Game Over ---
         gameOverPanel = new VBox(20);
         gameOverPanel.setAlignment(Pos.CENTER);
         gameOverPanel.setStyle("-fx-background-color: rgba(0, 0, 0, 0.75);");
@@ -66,20 +69,38 @@ public class GameScreen {
         });
 
         gameOverPanel.getChildren().addAll(lblGameOver, btnRetry, btnMenu);
-
         gameOverPanel.setVisible(false);
 
+        // --- Pannello di Vittoria (Nuovo) ---
+        victoryPanel = new VBox(20);
+        victoryPanel.setAlignment(Pos.CENTER);
+        victoryPanel.setStyle("-fx-background-color: rgba(0, 0, 0, 0.75);");
+
+        Label lblVictory = new Label("HAI VINTO!");
+        lblVictory.setStyle("-fx-font-size: 40px; -fx-text-fill: gold; -fx-font-weight: bold;");
+
+        Label lblCompliments = new Label("Hai completato tutti i livelli!");
+        lblCompliments.setStyle("-fx-font-size: 20px; -fx-text-fill: white;");
+
+        Button btnMenuVictory = new Button("Torna al Menu");
+        btnMenuVictory.setStyle("-fx-font-size: 16px; -fx-padding: 10 20 10 20;");
+        btnMenuVictory.setOnAction(e -> {
+            sm.switchToMenu();
+        });
+
+        victoryPanel.getChildren().addAll(lblVictory, lblCompliments, btnMenuVictory);
+        victoryPanel.setVisible(false);
+
+        // --- Soluzione al problema del ridimensionamento del Canvas ---
+        Pane canvasContainer = new Pane(gameCanvas);
+        canvasContainer.setMinSize(0, 0);
+
+        gameCanvas.widthProperty().bind(canvasContainer.widthProperty());
+        gameCanvas.heightProperty().bind(canvasContainer.heightProperty());
+
         StackPane centerPane = new StackPane();
+        centerPane.getChildren().addAll(canvasContainer, gameOverPanel, victoryPanel);
 
-        centerPane.getChildren().addAll(gameCanvas, gameOverPanel);
-
-        centerPane.widthProperty().addListener((obs, oldVal, newVal) -> {
-            gameCanvas.setWidth(newVal.doubleValue());
-        });
-
-        centerPane.heightProperty().addListener((obs, oldVal, newVal) -> {
-            gameCanvas.setHeight(newVal.doubleValue());
-        });
         rootLayout.setTop(topBar);
         rootLayout.setCenter(centerPane);
     }
@@ -87,6 +108,11 @@ public class GameScreen {
     public void showGameOver(GameLoop gl) {
         gl.stop();
         gameOverPanel.setVisible(true);
+    }
+
+    public void showVictory(GameLoop gl) {
+        gl.stop(); // Ferma il gioco
+        victoryPanel.setVisible(true); // Mostra la schermata di vittoria
     }
 
     public BorderPane getLayout(){
