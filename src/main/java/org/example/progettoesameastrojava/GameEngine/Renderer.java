@@ -96,7 +96,19 @@ public class Renderer {
                     gc.drawImage(AssetManager.getImage("Stellina"),drawX, drawY, scaledTileSize, scaledTileSize);
                 }
                 if(map[row][col] == 6){
-                    gc.drawImage(AssetManager.getImage("Stella"),drawX+8, drawY+8, scaledTileSize-16, scaledTileSize-16);
+                    gc.drawImage(AssetManager.getImage("Stella"),drawX+8, drawY, scaledTileSize-16, scaledTileSize-16);
+                }
+                if(map[row][col] == 7){
+                    gc.drawImage(AssetManager.getImage("TrampolinoBottomLeft"),drawX, drawY, scaledTileSize-8, scaledTileSize-8);
+                }
+                if(map[row][col] == 8){
+                    gc.drawImage(AssetManager.getImage("TrampolinoBottomRight"),drawX, drawY, scaledTileSize-8, scaledTileSize-8);
+                }
+                if(map[row][col] == 9){
+                    gc.drawImage(AssetManager.getImage("TrampolinoTopLeft"),drawX, drawY, scaledTileSize-8, scaledTileSize-8);
+                }
+                if(map[row][col] == 10){
+                    gc.drawImage(AssetManager.getImage("TrampolinoTopRight"),drawX+8, drawY, scaledTileSize-8, scaledTileSize-8);
                 }
             }
         }

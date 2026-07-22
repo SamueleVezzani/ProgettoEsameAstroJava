@@ -27,8 +27,10 @@ public class AssetManager {
         loadImage("PortaleFineLivello","/images/PortaleFineLivello.png");
         loadImage("Stella","/images/Stella.png");
         loadImage("Stellina","/images/Stellina.png");
-
-
+        loadImage("TrampolinoBottomLeft","/images/TrampolinoBottomLeft.png");
+        loadImage("TrampolinoBottomRight","/images/TrampolinoBottomRight.png");
+        loadImage("TrampolinoTopLeft","/images/TrampolinoTopLeft.png");
+        loadImage("TrampolinoTopRight","/images/TrampolinoTopRight.png");
     }
 
     private static void loadImage(String key, String filePath) {
