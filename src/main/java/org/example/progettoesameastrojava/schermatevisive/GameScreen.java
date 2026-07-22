@@ -26,6 +26,7 @@ public class GameScreen {
     private Label lblLives;
     private GameLoop gl;
     private SceneManager sm;
+    private VBox victoryPanel;
 
     private StackPane root;
     private VBox gameOverPanel;
@@ -47,6 +48,7 @@ public class GameScreen {
         topBar.getChildren().addAll(lblScore, lblLives);
         topBar.setStyle("-fx-padding: 10; -fx-background-color: lightgray;");
 
+        // --- Pannello Game Over ---
         gameOverPanel = new VBox(20);
         gameOverPanel.setAlignment(Pos.CENTER);
         gameOverPanel.setStyle("-fx-background-color: rgba(0, 0, 0, 0.75);");
@@ -69,21 +71,35 @@ public class GameScreen {
         gameOverPanel.getChildren().addAll(lblGameOver, btnRetry, btnMenu);
         gameOverPanel.setVisible(false);
 
-        // --- LA SOLUZIONE AL PROBLEMA DEL RIDIMENSIONAMENTO ---
-        // 1. Creiamo un Pane "guscio" per il Canvas
-        Pane canvasContainer = new Pane(gameCanvas);
+        // --- Pannello di Vittoria (Nuovo) ---
+        victoryPanel = new VBox(20);
+        victoryPanel.setAlignment(Pos.CENTER);
+        victoryPanel.setStyle("-fx-background-color: rgba(0, 0, 0, 0.75);");
 
-        // 2. IL SEGRETO: Diciamo al guscio che può rimpicciolirsi fino a 0 pixel!
+        Label lblVictory = new Label("HAI VINTO!");
+        lblVictory.setStyle("-fx-font-size: 40px; -fx-text-fill: gold; -fx-font-weight: bold;");
+
+        Label lblCompliments = new Label("Hai completato tutti i livelli!");
+        lblCompliments.setStyle("-fx-font-size: 20px; -fx-text-fill: white;");
+
+        Button btnMenuVictory = new Button("Torna al Menu");
+        btnMenuVictory.setStyle("-fx-font-size: 16px; -fx-padding: 10 20 10 20;");
+        btnMenuVictory.setOnAction(e -> {
+            sm.switchToMenu();
+        });
+
+        victoryPanel.getChildren().addAll(lblVictory, lblCompliments, btnMenuVictory);
+        victoryPanel.setVisible(false);
+
+        // --- Soluzione al problema del ridimensionamento del Canvas ---
+        Pane canvasContainer = new Pane(gameCanvas);
         canvasContainer.setMinSize(0, 0);
 
-        // 3. Ora possiamo usare il bind() sicuro sul guscio
         gameCanvas.widthProperty().bind(canvasContainer.widthProperty());
         gameCanvas.heightProperty().bind(canvasContainer.heightProperty());
 
         StackPane centerPane = new StackPane();
-
-        // 4. Aggiungiamo il guscio (non direttamente il canvas) allo StackPane
-        centerPane.getChildren().addAll(canvasContainer, gameOverPanel);
+        centerPane.getChildren().addAll(canvasContainer, gameOverPanel, victoryPanel);
 
         rootLayout.setTop(topBar);
         rootLayout.setCenter(centerPane);
@@ -92,6 +108,11 @@ public class GameScreen {
     public void showGameOver(GameLoop gl) {
         gl.stop();
         gameOverPanel.setVisible(true);
+    }
+
+    public void showVictory(GameLoop gl) {
+        gl.stop(); // Ferma il gioco
+        victoryPanel.setVisible(true); // Mostra la schermata di vittoria
     }
 
     public BorderPane getLayout(){

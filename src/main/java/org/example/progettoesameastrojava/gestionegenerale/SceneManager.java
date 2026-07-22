@@ -2,6 +2,7 @@ package org.example.progettoesameastrojava.gestionegenerale;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.example.progettoesameastrojava.GameEngine.GameLoop;
@@ -30,7 +31,7 @@ public class SceneManager {
             gl.stop();
         }
         MenuScreen ms = new MenuScreen(this);
-        VBox menuLayout = ms.getLayout();
+        StackPane menuLayout = ms.getLayout();
         Scene menuScene = new Scene(menuLayout, 800, 500);
 
         mainStage.setScene(menuScene);
