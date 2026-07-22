@@ -36,13 +36,14 @@ public class Renderer {
         double canvasWidth = this.canvas.getWidth();
         double canvasHeight = this.canvas.getHeight();
 
+        // Sfondo scalato sul Canvas
         gc.drawImage(AssetManager.getImage("SfondoSpazio"), 0, 0, canvasWidth, canvasHeight);
 
-        double visibleWidth = canvas.getWidth() / zoom;
-        double visibleHeight = canvas.getHeight() / zoom;
+        double visibleWidth = canvasWidth / zoom;
+        double visibleHeight = canvasHeight / zoom;
 
-        double targetX = player.getX() - (visibleWidth / 2);
-        double targetY = player.getY() - (visibleHeight / 2);
+        double targetX = player.getX() - (visibleWidth / 2.0);
+        double targetY = player.getY() - (visibleHeight / 2.0);
 
         cameraX += (targetX - cameraX) * lerpFactor;
         cameraY += (targetY - cameraY) * lerpFactor;
@@ -50,25 +51,40 @@ public class Renderer {
         double mapWidth = map[0].length * tileSize;
         double mapHeight = map.length * tileSize;
 
-        double maxCameraX = Math.max(0, mapWidth - visibleWidth);
-        double maxCameraY = Math.max(0, mapHeight - visibleHeight);
+        // Se la finestra è più grande della mappa, calcola l'offset per centrarla
+        double offsetX = 0;
+        double offsetY = 0;
 
-        cameraX = Math.max(0, Math.min(cameraX, maxCameraX));
-        cameraY = Math.max(0, Math.min(cameraY, maxCameraY));
+        if (mapWidth * zoom < canvasWidth) {
+            offsetX = (canvasWidth - (mapWidth * zoom)) / 2.0;
+            cameraX = 0;
+        } else {
+            double maxCameraX = mapWidth - visibleWidth;
+            cameraX = Math.max(0, Math.min(cameraX, maxCameraX));
+        }
 
-        renderMap(map, tileSize, cameraX, cameraY);
-        renderPlayer(player, cameraX, cameraY, tileSize);
+        if (mapHeight * zoom < canvasHeight) {
+            offsetY = (canvasHeight - (mapHeight * zoom)) / 2.0;
+            cameraY = 0;
+        } else {
+            double maxCameraY = mapHeight - visibleHeight;
+            cameraY = Math.max(0, Math.min(cameraY, maxCameraY));
+        }
+
+        renderMap(map, tileSize, cameraX, cameraY, offsetX, offsetY);
+        renderPlayer(player, cameraX, cameraY, tileSize, offsetX, offsetY);
     }
-    private void renderPlayer(Player player, double cameraX, double cameraY, int tileSize) {
+
+    private void renderPlayer(Player player, double cameraX, double cameraY, int tileSize, double offsetX, double offsetY) {
         double scaledTileSize = tileSize * zoom;
 
-        double drawX = (player.getX() - cameraX) * zoom;
-        double drawY = (player.getY() - cameraY) * zoom;
+        double drawX = ((player.getX() - cameraX) * zoom) + offsetX;
+        double drawY = ((player.getY() - cameraY) * zoom) + offsetY;
 
         gc.drawImage(player.getImage(), drawX, drawY, scaledTileSize, scaledTileSize);
     }
 
-    private void renderMap(int[][] map, int tileSize, double cameraX, double cameraY) {
+    private void renderMap(int[][] map, int tileSize, double cameraX, double cameraY, double offsetX, double offsetY) {
         double scaledTileSize = tileSize * zoom;
 
         int viewWidth = (int) Math.ceil(canvas.getWidth() / scaledTileSize) + 1;
@@ -80,8 +96,8 @@ public class Renderer {
         for (int row = Math.max(0, startRow); row < Math.min(startRow + viewHeight + 1, map.length); row++) {
             for (int col = Math.max(0, startCol); col < Math.min(startCol + viewWidth + 1, map[0].length); col++) {
 
-                double drawX = (col * tileSize - cameraX) * zoom;
-                double drawY = (row * tileSize - cameraY) * zoom;
+                double drawX = ((col * tileSize - cameraX) * zoom) + offsetX;
+                double drawY = ((row * tileSize - cameraY) * zoom) + offsetY;
 
                 if (map[row][col] == 1) {
                     gc.drawImage(AssetManager.getImage("MuroMappa"), drawX, drawY, scaledTileSize, scaledTileSize);
@@ -90,13 +106,13 @@ public class Renderer {
                     gc.drawImage(AssetManager.getImage("MuroOstacolo"), drawX, drawY, scaledTileSize, scaledTileSize);
                 }
                 if(map[row][col] == 4) {
-                    gc.drawImage(AssetManager.getImage("PortaleFineLivello"),drawX, drawY, scaledTileSize, scaledTileSize);
+                    gc.drawImage(AssetManager.getImage("PortaleFineLivello"), drawX, drawY, scaledTileSize, scaledTileSize);
                 }
                 if(map[row][col] == 5){
-                    gc.drawImage(AssetManager.getImage("Stellina"),drawX, drawY, scaledTileSize, scaledTileSize);
+                    gc.drawImage(AssetManager.getImage("Stellina"), drawX, drawY, scaledTileSize, scaledTileSize);
                 }
                 if(map[row][col] == 6){
-                    gc.drawImage(AssetManager.getImage("Stella"),drawX+8, drawY+8, scaledTileSize-16, scaledTileSize-16);
+                    gc.drawImage(AssetManager.getImage("Stella"), drawX + 8, drawY + 8, scaledTileSize - 16, scaledTileSize - 16);
                 }
             }
         }

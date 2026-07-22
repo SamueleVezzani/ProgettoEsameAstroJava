@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import org.example.progettoesameastrojava.GameEngine.GameLoop;
 import org.example.progettoesameastrojava.gestionegenerale.SceneManager;
 import javafx.scene.layout.VBox;
@@ -33,7 +34,7 @@ public class GameScreen {
         this.sm = sm;
 
         rootLayout = new BorderPane();
-        gameCanvas = new Canvas();
+        gameCanvas = new Canvas(800, 500);
         lblScore = new Label("Punteggio: 0");
         lblLives = new Label("Vite: 3");
 
@@ -66,15 +67,23 @@ public class GameScreen {
         });
 
         gameOverPanel.getChildren().addAll(lblGameOver, btnRetry, btnMenu);
-
         gameOverPanel.setVisible(false);
+
+        // --- LA SOLUZIONE AL PROBLEMA DEL RIDIMENSIONAMENTO ---
+        // 1. Creiamo un Pane "guscio" per il Canvas
+        Pane canvasContainer = new Pane(gameCanvas);
+
+        // 2. IL SEGRETO: Diciamo al guscio che può rimpicciolirsi fino a 0 pixel!
+        canvasContainer.setMinSize(0, 0);
+
+        // 3. Ora possiamo usare il bind() sicuro sul guscio
+        gameCanvas.widthProperty().bind(canvasContainer.widthProperty());
+        gameCanvas.heightProperty().bind(canvasContainer.heightProperty());
 
         StackPane centerPane = new StackPane();
 
-        centerPane.getChildren().addAll(gameCanvas, gameOverPanel);
-
-        gameCanvas.widthProperty().bind(centerPane.widthProperty());
-        gameCanvas.heightProperty().bind(centerPane.heightProperty());
+        // 4. Aggiungiamo il guscio (non direttamente il canvas) allo StackPane
+        centerPane.getChildren().addAll(canvasContainer, gameOverPanel);
 
         rootLayout.setTop(topBar);
         rootLayout.setCenter(centerPane);
