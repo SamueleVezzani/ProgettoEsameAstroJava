@@ -73,9 +73,13 @@ public class GameScreen {
 
         centerPane.getChildren().addAll(gameCanvas, gameOverPanel);
 
-        gameCanvas.widthProperty().bind(centerPane.widthProperty());
-        gameCanvas.heightProperty().bind(centerPane.heightProperty());
+        centerPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            gameCanvas.setWidth(newVal.doubleValue());
+        });
 
+        centerPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            gameCanvas.setHeight(newVal.doubleValue());
+        });
         rootLayout.setTop(topBar);
         rootLayout.setCenter(centerPane);
     }
